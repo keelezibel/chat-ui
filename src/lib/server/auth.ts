@@ -35,9 +35,11 @@ export function refreshSessionCookie(cookies: Cookies, sessionId: string) {
 }
 
 export const authCondition = (locals: App.Locals) => {
-	return locals.user
-		? { userId: locals.user._id }
-		: { sessionId: locals.sessionId, userId: { $exists: false } };
+	// return locals.user
+	// 	? { userId: locals.user._id }
+	// 	: { sessionId: locals.sessionId, userId: { $exists: false } };
+	// return { userId: "BLT" };	// Bacon Lettuce Tomato
+	return { sessionId: "1234567890", userId: { $exists: false } };	// Bacon Lettuce Tomato
 };
 
 /**

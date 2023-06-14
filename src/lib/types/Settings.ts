@@ -7,12 +7,13 @@ export interface Settings extends Timestamps {
 	sessionId?: string;
 
 	/**
-	 * Note: Only conversations with this settings explictly set to true should be shared.
+	 * Note: Only conversations with this settings explicitly set to true should be shared.
 	 *
 	 * This setting is explicitly set to true when users accept the ethics modal.
 	 * */
 	shareConversationsWithModelAuthors: boolean;
 	ethicsModalAcceptedAt: Date | null;
+	ethicsModalAccepted: boolean;
 	activeModel: string;
 }
 
@@ -20,4 +21,7 @@ export interface Settings extends Timestamps {
 export const DEFAULT_SETTINGS = {
 	shareConversationsWithModelAuthors: true,
 	activeModel: defaultModel.id,
+	ethicsModalAcceptedAt: new Date(),
+	ethicsModalAccepted: true,
+	sessionId: "1234567890"
 };

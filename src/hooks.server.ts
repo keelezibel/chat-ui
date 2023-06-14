@@ -13,7 +13,8 @@ import { ERROR_MESSAGES } from "$lib/stores/errors";
 export const handle: Handle = async ({ event, resolve }) => {
 	const token = event.cookies.get(COOKIE_NAME);
 
-	event.locals.sessionId = token || crypto.randomUUID();
+	// event.locals.sessionId = token || crypto.randomUUID();
+	event.locals.sessionId = "1234567890"
 
 	const user = await collections.users.findOne({ sessionId: event.locals.sessionId });
 
@@ -33,30 +34,30 @@ export const handle: Handle = async ({ event, resolve }) => {
 		});
 	}
 
-	// CSRF protection
-	const requestContentType = event.request.headers.get("content-type")?.split(";")[0] ?? "";
-	/** https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#attr-enctype */
-	const nativeFormContentTypes = [
-		"multipart/form-data",
-		"application/x-www-form-urlencoded",
-		"text/plain",
-	];
-	if (event.request.method === "POST" && nativeFormContentTypes.includes(requestContentType)) {
-		const referer = event.request.headers.get("referer");
+	// // CSRF protection
+	// const requestContentType = event.request.headers.get("content-type")?.split(";")[0] ?? "";
+	// /** https://developer.mozilla.org/en-US/docs/Web/HTML/Element/form#attr-enctype */
+	// const nativeFormContentTypes = [
+	// 	"multipart/form-data",
+	// 	"application/x-www-form-urlencoded",
+	// 	"text/plain",
+	// ];
+	// if (event.request.method === "POST" && nativeFormContentTypes.includes(requestContentType)) {
+	// 	const referer = event.request.headers.get("referer");
 
-		if (!referer) {
-			return errorResponse(403, "Non-JSON form requests need to have a referer");
-		}
+	// 	if (!referer) {
+	// 		return errorResponse(403, "Non-JSON form requests need to have a referer");
+	// 	}
 
-		const validOrigins = [
-			new URL(event.request.url).origin,
-			...(PUBLIC_ORIGIN ? [new URL(PUBLIC_ORIGIN).origin] : []),
-		];
+	// 	const validOrigins = [
+	// 		new URL(event.request.url).origin,
+	// 		...(PUBLIC_ORIGIN ? [new URL(PUBLIC_ORIGIN).origin] : []),
+	// 	];
 
-		if (!validOrigins.includes(new URL(referer).origin)) {
-			return errorResponse(403, "Invalid referer for POST request");
-		}
-	}
+	// 	if (!validOrigins.includes(new URL(referer).origin)) {
+	// 		return errorResponse(403, "Invalid referer for POST request");
+	// 	}
+	// }
 
 	if (
 		!event.url.pathname.startsWith(`${base}/login`) &&
@@ -71,7 +72,8 @@ export const handle: Handle = async ({ event, resolve }) => {
 		// If login is required, `ethicsModalAcceptedAt` is already true at this point, so do not pass this condition. This saves a DB call.
 		if (!requiresUser && !event.url.pathname.startsWith(`${base}/settings`)) {
 			const hasAcceptedEthicsModal = await collections.settings.countDocuments({
-				sessionId: event.locals.sessionId,
+				// sessionId: event.locals.sessionId,
+				sessionId: "1234567890",
 				ethicsModalAcceptedAt: { $exists: true },
 			});
 
